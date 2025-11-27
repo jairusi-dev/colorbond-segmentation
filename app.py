@@ -5,8 +5,19 @@ from PIL import Image, ImageFilter
 import numpy as np
 import subprocess
 import uuid
+from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI()
+
+# Allow requests from your website; use specific origin in prod
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Replace "*" with "https://your-site.com" when you go prod
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 UPLOAD_DIR = Path("uploads")
 MASK_DIR = Path("masks")
@@ -54,6 +65,9 @@ async def segment(file: UploadFile = File(...)):
         "image_id": uid
     })
 
+@app.get("/")
+def home():
+    return {"status":"ok","service":"colorbond-segmentation"}
 
 @app.get("/masks/{name}")
 async def get_mask(name: str):
