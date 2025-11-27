@@ -2,7 +2,5 @@ fastapi
 uvicorn[standard]
 pillow
 numpy
-opencv-python-headless
-rembg
 google-genai
 python-multipart
